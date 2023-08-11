@@ -1,0 +1,32 @@
+name: code analysis
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  checks: write
+  id-token: write
+  contents: write
+  actions: read
+  security-events: write
+  pull-requests: write
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: SonarCloud Scan
+        run: |
+            dotnet tool install --global dotnet-sonarscanner
+            dotnet sonarscanner begin /k:"romeosonarcloud_repo1" /o:"romeosonarcloud" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" 
+            dotnet build ./WebApplicationRepo1.sln --configuration Release --no-restore /p:Version=$GITVERSION_MAJORMINORPATCH
+            dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"s
