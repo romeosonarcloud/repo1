@@ -20,4 +20,4 @@ jobs:
          dotnet tool install --global dotnet-sonarscanner
          dotnet sonarscanner begin /o:romeosonarcloud /k:romeosonarcloud_repo2 /d:sonar.host.url=https://sonarcloud.io
          dotnet build ./WebApplicationRepo1.sln --configuration Release --no-restore
-         dotnet sonarscanner end
+         dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
