@@ -14,6 +14,7 @@ namespace TestProject1
         public WeatherForecastControllerTests(WebApplicationFactory<Program> application)
         {
             _client = application.CreateClient();
+            var testing = "test string";
         }
 
 
