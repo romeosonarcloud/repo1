@@ -19,12 +19,17 @@ jobs:
         with:
             fetch-depth: 0
 
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Analyze with SonarCloud
         run: |
-         dotnet tool install --global dotnet-sonarscanner --version 5.13.1
+         dotnet tool install --global dotnet-sonarscanner
          dotnet sonarscanner begin /o:romeosonarcloud /k:romeosonarcloud_repo1 /d:sonar.host.url=https://sonarcloud.io /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
          dotnet build ./WebApplicationRepo1.sln --configuration Release --no-restore
          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
